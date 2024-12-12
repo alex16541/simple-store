@@ -1,0 +1,12 @@
+export const getRouteProductsPage = () => `/products`;
+export const getRouteProductPage = (id: number) => `/products/${id}`;
+export const getRouteLoginPage = () => `/auth/login`;
+export const getRouteRegisterPage = () => `/auth/register`;
+export const getRouteAdminPage = () => `/admin`;
+export const getRouteCheckoutPage = () => `/checkout`;
+export const getRouteCheckoutDeliveryAddressPage = () => `/checkout/deliveryAddress`;
+export const getRouteCheckoutPaymentTypePage = () => `/checkout/paymentType`;
+export const getRouteCheckoutOrderReviewPage = () => `/checkout/orderReview`;
+export const getRouteCheckoutPaymentPage = () => `/checkout/payment`;
+export const getRouteCheckoutSuccessPage = () => `/checkout/successScreen`;
+export const getRouteOrderPage = (id: number | string) => `/orders/${id}`;
