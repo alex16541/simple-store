@@ -1,12 +1,12 @@
-import { Container, Grid2 } from "@mui/material";
+import { Container, Grid2, Stack, Typography } from "@mui/material";
 import { PageTitle } from "@/widgets/PageTitle";
 import {
   ProductsList,
-  Product,
   getProducts,
   ProductFilters,
   ProductFiltersFab,
 } from "@/entity/Product";
+import { LoadNextPageButton } from "./LoadNextPageButton";
 
 interface ProductsPageProsp {
   searchParams: Promise<Record<string, string>>;
@@ -14,17 +14,31 @@ interface ProductsPageProsp {
 const ProductsPage = async (props: ProductsPageProsp) => {
   const { searchParams: params } = props;
   const searchParams = await params;
-  const products: Product[] = await getProducts(searchParams);
+  const {data: products, totalItems} = await getProducts(searchParams);
 
   return (
     <Container sx={{ paddingBottom: 2 }} maxWidth="xl">
-      <PageTitle>Ваши рекоммендации</PageTitle>
+      <PageTitle>Список товаров</PageTitle>
       <Grid2 container columnSpacing={2}>
         <Grid2 size={[12, 12, 12, 9]}>
-          <ProductsList products={products} />
+          {totalItems ? (
+            <Stack gap={2}>
+              <ProductsList products={products} />
+              <LoadNextPageButton pageSize={9} totalItems={totalItems}/>
+            </Stack>
+          ) : (
+            <Stack>
+              <Typography variant="h6">
+                Мы ничего не нашли по вашему запросу 😟
+              </Typography>
+              {!searchParams.size && (
+                <Typography>Попробуйте изменить запрос</Typography>
+              )}
+            </Stack>
+          )}
         </Grid2>
         <Grid2 size={[0, 0, 0, 3]} display={["none", "none", "none", "block"]}>
-          <ProductFilters/>
+          <ProductFilters />
         </Grid2>
       </Grid2>
       <ProductFiltersFab

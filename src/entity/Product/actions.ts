@@ -2,6 +2,7 @@
 
 import { sql } from "@/lib/server/db";
 import { Product } from "@/entity/Product";
+import { WithPaginationResponse } from "@/shared/types";
 
 export async function createProductsTable() {
   const data = await sql`CREATE TABLE IF NOT EXISTS products (
@@ -16,13 +17,26 @@ export async function createProductsTable() {
   return data;
 }
 
+const withTotalItems = (query: string, subQuery: string = "") => {
+  return `SELECT 
+    (SELECT COUNT(*) FROM products ${subQuery}) AS "totalItems",
+    json_agg(product_data) AS "data" 
+FROM (
+  ${query}
+) AS product_data;`;
+};
+
 export async function getProducts(
   searchParams?: Record<string, string>,
-): Promise<Product[]> {
-  let data: Product[] = [];
+): Promise<WithPaginationResponse<Product[]>> {
+  let data: WithPaginationResponse<Product[]> = { data: [], totalItems: 0 };
 
-  const fetchProducts = async () => {
-    return (await sql`SELECT 
+  const fetchProducts = async (
+    limit: number | string = 9,
+    offset: number | string = 0,
+  ) => {
+    return (await sql(
+      withTotalItems(`SELECT 
               p.*, 
               COALESCE(
                 ARRAY_AGG(pi.url) 
@@ -32,12 +46,21 @@ export async function getProducts(
               FROM products p 
               LEFT JOIN product_images pi 
               ON p.id = pi.product_id
-              GROUP BY p.id`) as Product[];
+              GROUP BY p.id
+              LIMIT ${limit}
+              OFFSET ${offset}
+              `),
+    )) as WithPaginationResponse<Product[]>[];
   };
 
-  const fetchProductsWithParams = async (params: string[]) => {
+  const fetchProductsWithParams = async (
+    params: string[],
+    limit: number | string = 9,
+    offset: number | string = 0,
+  ) => {
     return (await sql(
-      `SELECT 
+      withTotalItems(
+        `SELECT 
           p.*, 
           COALESCE(
             ARRAY_AGG(pi.url) 
@@ -47,8 +70,13 @@ export async function getProducts(
         FROM products p
         LEFT JOIN product_images pi ON p.id = pi.product_id
         WHERE ${params.join(" AND ")}
-        GROUP BY p.id`,
-    )) as Product[];
+        GROUP BY p.id
+        LIMIT ${limit}
+        OFFSET ${offset}
+        `,
+        `WHERE ${params.join(" AND ")}`,
+      ),
+    )) as WithPaginationResponse<Product[]>[];
   };
 
   if (searchParams) {
@@ -67,13 +95,16 @@ export async function getProducts(
     if (searchParams.minStock) params.push(`stock >= ${searchParams.minStock}`);
     if (searchParams.maxStock) params.push(`stock <= ${searchParams.maxStock}`);
 
+    const limit = searchParams.limit;
+    const offset = searchParams.offset;
+
     if (params.length > 0) {
-      data = await fetchProductsWithParams(params);
+      data = (await fetchProductsWithParams(params, limit, offset))[0];
     } else {
-      data = await fetchProducts();
+      data = (await fetchProducts(limit, offset))[0];
     }
   } else {
-    data = await fetchProducts();
+    data = (await fetchProducts())[0];
   }
 
   return data;

@@ -55,12 +55,12 @@ export const ProductFilters = (props: ProductFiltersProps) => {
           options={initialLoading ? ["Загрузка..."] : categories}
           onChange={onChangeCategory}
           getOptionDisabled={(item) => item === "Загрузка..."}
+          value={selectedCategory}
           renderInput={(params) => (
             <TextField
               {...params}
               variant="outlined"
               label="Категория"
-              value={selectedCategory}
               fullWidth
               color="success"
             />
@@ -107,10 +107,10 @@ export const ProductFilters = (props: ProductFiltersProps) => {
           options={initialLoading ? ["Загрузка..."] : brands}
           getOptionDisabled={(item) => item === "Загрузка..."}
           onChange={onChangeBrand}
+          value={selectedBrand}
           renderInput={(params) => (
             <TextField
               {...params}
-              value={selectedBrand}
               name="brand"
               variant="outlined"
               label="Бренд"

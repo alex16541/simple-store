@@ -11,7 +11,6 @@ export const useProductFilters = () => {
   const router = useRouter();
   const [categories, setCategories] = useState<string[]>([]);
   const [brands, setBrands] = useState<string[]>([]);
-
   const defaultValues = useRef({
     category: searchParams.get("category") ?? categories[0] ?? "",
     brand: searchParams.get("brand") ?? brands[0] ?? "",
@@ -94,6 +93,7 @@ export const useProductFilters = () => {
     setSelectedRateRange([0, 5]);
 
     setParams({
+      offset: null,
       category: null,
       brand: null,
       minPrice: null,
@@ -105,6 +105,7 @@ export const useProductFilters = () => {
 
   const updateParams = useDebouncedCallback(() => {
     setParams({
+      offset: null,
       category: selectedCategory,
       brand: selectedBrand,
       minPrice: selectedPriceMin,
