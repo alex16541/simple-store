@@ -62,7 +62,7 @@ const UserSlice = createSlice({
       localStorage.setItem(USER_CART_STORAGE_KEY, JSON.stringify(state.cart));
     },
 
-    deleteProductFromCart: (state, action: PayloadAction<number>) => {
+    deleteProductFromCart: (state, action: PayloadAction<string>) => {
       const item = state.cart.find(
         (item) => item.productData.id === action.payload,
       );

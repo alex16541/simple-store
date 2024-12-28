@@ -10,7 +10,6 @@ export {
   selectCheckoutLastStep,
   selectCheckoutData,
   selectCheckoutPaymentType,
-  selectCheckoutGettingOrderType,
   selectCheckoutAllStepsPassed,
 } from "./model/selectors/checkoutSlectors";
 
