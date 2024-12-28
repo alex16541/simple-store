@@ -1,3 +1,4 @@
+import { toggleSearchParams } from "@/shared/lib/ToggleSearchParams";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useState, ChangeEvent, useEffect, useRef, useMemo } from "react";
 import { useDebouncedCallback } from "use-debounce";
@@ -7,7 +8,7 @@ export const useProductFilters = () => {
   const pathname = usePathname();
 
   const [initialLoading, setInitialLoading] = useState(true);
-  const { replace } = useRouter();
+  const router = useRouter();
   const [categories, setCategories] = useState<string[]>([]);
   const [brands, setBrands] = useState<string[]>([]);
 
@@ -38,19 +39,10 @@ export const useProductFilters = () => {
     Number(defaultValues.current.maxRate),
   ]);
 
-  const setParams = (param: Record<string, string | number | null>) => {
-    const params = new URLSearchParams(searchParams);
-
-    for (const [key, value] of Object.entries(param)) {
-      if (value) {
-        params.set(key, value.toString());
-      } else {
-        params.delete(key);
-      }
-    }
-
-    const newPathname = `${pathname}?${params.toString()}`;
-    replace(newPathname);
+  const setParams = (params: Record<string, string | number | null>) => {
+    const newParams = toggleSearchParams(params,searchParams)
+    const newPathname = `${pathname}?${newParams.toString()}`;
+    router.push(newPathname);
   };
 
   const onChangeMinPrice = (

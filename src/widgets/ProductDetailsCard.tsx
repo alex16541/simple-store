@@ -2,7 +2,6 @@
 import {
   Card,
   Stack,
-  CardMedia,
   Box,
   Divider,
   CardContent,
@@ -13,25 +12,9 @@ import {
   styled,
 } from "@mui/material";
 import { CartProductCounter } from "@/features/CartProductCounter";
-import { Product } from "@/entity/Product";
-
-const CardImageContainer = styled(CardMedia)(({ theme }) =>
-  theme.unstable_sx({
-    maxWidth: ["100%", "100%", 650],
-    padding: 2,
-    paddingBottom: [0, 0, 2],
-    width: "100%",
-    overflow: "hidden",
-    aspectRatio: "1/1",
-  }),
-);
-
-const CardImage = styled(Box)(({ theme }) => ({
-  height: "100%",
-  width: "100%",
-  objectFit: "cover",
-  borderRadius: theme.shape.borderRadius * 5,
-})) as typeof Box;
+import { Product, ProductGallery } from "@/entity/Product";
+import { UserRole } from "@/entity/User";
+import { ChangeProductModal } from "@/features/ChangeProductModal";
 
 const ProductCard = styled(Card)(({ theme }) =>
   theme.unstable_sx({
@@ -45,16 +28,15 @@ const ProductCard = styled(Card)(({ theme }) =>
 
 interface ProductDetailsCard {
   product: Product;
+  userRole: UserRole;
 }
 
 export const ProductDetailsCard = (props: ProductDetailsCard) => {
-  const { product } = props;
+  const { product, userRole } = props;
 
   return (
     <ProductCard variant="outlined">
-      <CardImageContainer>
-        <CardImage component="img" src="/les.jpeg" alt={product.name} />
-      </CardImageContainer>
+      <ProductGallery sx={{p: 2}} images={product.images}/>
       <Divider
         orientation="vertical"
         sx={{ display: ["none", "none", "block"] }}
@@ -91,7 +73,11 @@ export const ProductDetailsCard = (props: ProductDetailsCard) => {
         <Box>
           <Divider flexItem />
           <CardActions>
-            <CartProductCounter product={product} />
+            {userRole === "customer" ? (
+              <CartProductCounter product={product} />
+            ) : (
+              <ChangeProductModal product={product} />
+            )}
           </CardActions>
         </Box>
       </Stack>

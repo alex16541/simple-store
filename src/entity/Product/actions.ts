@@ -21,9 +21,42 @@ export async function getProducts(
 ): Promise<Product[]> {
   let data: Product[] = [];
 
+  const fetchProducts = async () => {
+    return (await sql`SELECT 
+              p.*, 
+              COALESCE(
+                ARRAY_AGG(pi.url) 
+                FILTER (WHERE pi.url IS NOT NULL), 
+                ARRAY[]::VARCHAR[]
+              ) AS images 
+              FROM products p 
+              LEFT JOIN product_images pi 
+              ON p.id = pi.product_id
+              GROUP BY p.id`) as Product[];
+  };
+
+  const fetchProductsWithParams = async (params: string[]) => {
+    return (await sql(
+      `SELECT 
+          p.*, 
+          COALESCE(
+            ARRAY_AGG(pi.url) 
+            FILTER (WHERE pi.url IS NOT NULL), 
+            ARRAY[]::VARCHAR[]
+          ) AS images
+        FROM products p
+        LEFT JOIN product_images pi ON p.id = pi.product_id
+        WHERE ${params.join(" AND ")}
+        GROUP BY p.id`,
+    )) as Product[];
+  };
+
   if (searchParams) {
     const params = [];
-
+    if (searchParams.search)
+      params.push(
+        `name ILIKE '%${searchParams.search}%' OR description ILIKE '%${searchParams.search}%'`,
+      );
     if (searchParams.category)
       params.push(`category = '${searchParams.category}'`);
     if (searchParams.brand) params.push(`brand = '${searchParams.brand}'`);
@@ -35,14 +68,12 @@ export async function getProducts(
     if (searchParams.maxStock) params.push(`stock <= ${searchParams.maxStock}`);
 
     if (params.length > 0) {
-      data = (await sql(
-        `SELECT * FROM products WHERE ${params.join(" AND ")}`,
-      )) as Product[];
+      data = await fetchProductsWithParams(params);
     } else {
-      data = (await sql`SELECT * FROM products`) as Product[];
+      data = await fetchProducts();
     }
   } else {
-    data = (await sql`SELECT * FROM products`) as Product[];
+    data = await fetchProducts();
   }
 
   return data;
@@ -65,20 +96,14 @@ export async function createProduct(product: Product) {
   return data;
 }
 
-export async function updateProduct(product: Product) {
-  const data = await sql`UPDATE products SET 
-  name = ${product.name},
-  price = ${product.price},
-  description = ${product.description},
-  category = ${product.category},
-  brand = ${product.brand},
-  stock = ${product.stock}
-  WHERE id = ${product.id}`;
-  return data;
-}
-
 export async function getProduct(id: number): Promise<Product> {
-  const data = await sql`SELECT * FROM products WHERE id = ${id}`;
+  const data =
+    await sql`SELECT p.*, COALESCE(ARRAY_AGG(pi.url) FILTER (WHERE pi.url IS NOT NULL), ARRAY[]::VARCHAR[]) AS images
+      FROM products p
+      LEFT JOIN product_images pi ON p.id = pi.product_id
+      WHERE p.id = ${id}
+      GROUP BY p.id`;
+
   return data[0] as Product;
 }
 
@@ -208,4 +233,3 @@ export async function getProductsByRate(
     await sql`SELECT * FROM products WHERE rate >= ${min} AND rate <= ${max}`;
   return data[1] as Product[];
 }
-

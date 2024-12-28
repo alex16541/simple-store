@@ -1,5 +1,4 @@
 import { sql } from "@/lib/server/db";
-import { NextRequest } from "next/server";
 import { cache } from "react";
 
 const fetchCtaegories = cache(async () => {
@@ -19,7 +18,7 @@ const fetchPriceRange = cache(async () => {
   return data;
 });
 
-export const GET = async (request: NextRequest) => {
+export const GET = async () => {
   const [categories, brands, priceRange] = await Promise.all([
     fetchCtaegories(),
     fetchBrands(),

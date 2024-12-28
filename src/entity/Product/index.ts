@@ -5,13 +5,13 @@ export { ProductsList } from "./ui/ProductsList";
 export { ProductTabs } from "./ui/ProductTabs";
 export { FilteredProductsList } from "./ui/FilteredProductsList";
 export { ProductFilters } from "./ui/ProductFilters";
+export { ProductGallery } from "./ui/ProductGallery";
 export {
   createProduct,
   createProductsTable,
   getCategories,
   getProducts,
   deleteProduct,
-  updateProduct,
   getProduct,
   getProductsByCategory,
   getProductsByBrand,

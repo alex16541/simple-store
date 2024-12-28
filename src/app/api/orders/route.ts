@@ -1,68 +1,45 @@
 import { DetailedAddress } from "@/entity/Address";
-import { Product } from "@/entity/Product";
+import {
+  createOrder,
+  addProductsToOrderItemsTable,
+  updateProductsInStock,
+} from "@/entity/Order/server";
+import { CartProduct } from "@/entity/User";
 import { PaymentType } from "@/features/PaymentTypeSelect";
-import { sql } from "@/lib/server/db";
+import { getSession } from "@/lib/server/session";
 import { NextRequest } from "next/server";
-
-const paymentTypeToPaymentMethod: Record<PaymentType, string> = {
-  cash: "cash",
-  card_online: "card_online",
-  card_offline: "card_offline",
-};
-
-const createOrder = async (
-  address: DetailedAddress,
-  paymentType: PaymentType,
-  totalPrice: number,
-) => {
-  const data =
-    await sql(`INSERT INTO orders (user_id, address, total_price, payment_method) 
-VALUES (
-${1}, 
-${JSON.stringify(address)}, 
-'pending', 
-${totalPrice}, 
-${paymentTypeToPaymentMethod[paymentType]})`);
-
-  return data;
-};
-
-const addProductsToOrderItemsTable = async (
-  orderId: number,
-  products: Product[],
-  totalPrice: number,
-) => {
-  const strings: string[]= [];
-
-  products.forEach(p => {
-    let string = `${orderId}, ${p.totalPrice}, ${p.unitPrice}`;
-
-    strings.push(string);
-  })
-
-  const data =
-    await sql(`INSERT INTO order_items (order_id, total_price) 
-              ${strings.join(' and')}
-`);
-  return data;
-};
 
 export interface CreateOrderBody {
   address: DetailedAddress;
+  products: CartProduct[];
   paymentType: PaymentType;
   totalPrice: number;
 }
 
 export const POST = async (request: NextRequest) => {
   try {
-    const body = (await request.json()) as CreateOrderBody;
+    const user = await getSession();
 
-    const order = createOrder(body.address, body.paymentType, body.totalPrice);
-    const items = addProductsToOrderItemsTable(aksdjfkjalsdkfj);
+    if(!user) throw new Error("User unauthorized");
+
+    const { address, products, paymentType, totalPrice } =
+      (await request.json()) as CreateOrderBody;
+
+    const orders = (await createOrder(user.id, address, paymentType, totalPrice)) as {
+      id: string;
+    }[];
+
+    const orderId = orders[0].id;
+
+    if (!orderId) throw Error("No id returned while order creating");
+
+    // TODO: Обернуть в транзакцию
+    await addProductsToOrderItemsTable(orderId, products);
+    await updateProductsInStock(products);
 
     return Response.json(
       {
-        order,
+        orderId,
       },
       {
         status: 200,
@@ -70,7 +47,7 @@ export const POST = async (request: NextRequest) => {
     );
   } catch (e) {
     return Response.json(
-      { error: "Internal error while order creation" },
+      { error: `Internal error while order creation: ${e}` },
       {
         status: 500,
       },

@@ -40,7 +40,7 @@ const DeliveryAddressStep = () => {
 
   useEffect(() => {
     dispatch(checkoutActions.setCurrentStep(CheckoutStep.deliveryAddress));
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

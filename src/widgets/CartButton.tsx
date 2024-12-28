@@ -10,11 +10,12 @@ import {
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useState } from "react";
-import CloseIcon from "@mui/icons-material/Close";
 import { useAppSelector } from "@/lib/store/hooks";
 import { CartProductCounter } from "@/features/CartProductCounter";
 import ProductionQuantityLimitsRoundedIcon from "@mui/icons-material/ProductionQuantityLimitsRounded";
 import { CartItem } from "@/entity/User";
+import { getRouteCartPage, getRouteCheckoutPage } from "@/shared/router/routes";
+import { ModalHeader } from "@/shared/ui/ModalHeader";
 
 export const CartButton = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,12 +51,7 @@ export const CartButton = () => {
             height: "100%",
           }}
         >
-          <Stack direction="row" justifyContent="space-between" gap={2} mb={1}>
-            <Typography variant="h5">Карзина</Typography>
-            <IconButton onClick={() => setIsOpen(false)}>
-              <CloseIcon />
-            </IconButton>
-          </Stack>
+        <ModalHeader title="Карзина" onClose={() => setIsOpen(false)}/>
           <Stack gap={1} mb={3} pr={2} overflow={"hidden scroll"}>
             {!cart.length && (
               <Stack
@@ -69,7 +65,6 @@ export const CartButton = () => {
               </Stack>
             )}
             {cart.map((item) => (
-              
               <CartItem
                 key={item.productData.id}
                 product={item.productData}
@@ -81,6 +76,8 @@ export const CartButton = () => {
           {!!cart.length && (
             <Stack gap={1}>
               <Button
+                href={getRouteCheckoutPage()}
+                onClick={() => setIsOpen(false)}
                 fullWidth
                 size="large"
                 color="success"
@@ -89,7 +86,7 @@ export const CartButton = () => {
                 Оформить заказ
               </Button>
               <Button
-                href="/cart"
+                href={getRouteCartPage()}
                 onClick={() => setIsOpen(false)}
                 fullWidth
                 size="large"

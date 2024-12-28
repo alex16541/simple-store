@@ -1,7 +1,12 @@
 "use client";
-import { styled, alpha } from "@mui/material/styles";
+import { styled, alpha, SxProps } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
+import { Box } from "@mui/material";
+import { KeyboardEvent, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { getRouteProductsPage } from "@/shared/router/routes";
+import { toggleSearchParams } from "@/shared/lib/ToggleSearchParams";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -22,35 +27,60 @@ const Search = styled("div")(({ theme }) => ({
   },
 }));
 
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
+const SearchIconWrapperSx: SxProps = {
+  padding: [0, 2],
   height: "100%",
   position: "absolute",
   pointerEvents: "none",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-}));
+};
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   width: "100%",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
   },
 }));
 
 export const AppSearch = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [searchValue] = useState(searchParams.get("search") ?? "");
+
+  const handleEnterClick = (e: KeyboardEvent<HTMLInputElement>) => {
+    const target = e.target as HTMLInputElement;
+
+    if (e.key !== "Enter") return;
+
+    if (pathname.startsWith(getRouteProductsPage())) {
+      const newParams = toggleSearchParams(
+        { search: target.value.trim() },
+        searchParams,
+      );
+
+      const newPathname = `${pathname}?${newParams.toString()}`;
+
+      router.push(newPathname);
+    } else {
+      router.push(getRouteProductsPage() + `?search=${target.value}`);
+    }
+  };
+
   return (
     <Search>
-      <SearchIconWrapper>
+      <Box sx={SearchIconWrapperSx}>
         <SearchIcon />
-      </SearchIconWrapper>
+      </Box>
       <StyledInputBase
         placeholder="Поиск товаров…"
         inputProps={{ "aria-label": "Поиск товаров" }}
+        defaultValue={searchValue}
+        onKeyDown={handleEnterClick}
       />
     </Search>
   );

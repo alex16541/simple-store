@@ -7,8 +7,8 @@ import { PaymentType } from "@/features/PaymentTypeSelect";
 const CHECKOUT_LOCALSTORAGE_KEY = "CHECKOUT_LOCALSTORAGE_KEY";
 
 const initialState: CheckoutSliceSchema = {
-  currentStep: CheckoutStep.gettingType,
-  lastStep: CheckoutStep.gettingType,
+  currentStep: CheckoutStep.deliveryAddress,
+  lastStep: CheckoutStep.deliveryAddress,
   data: {
     deliveryAddress: {},
     paymentType: "card_online",

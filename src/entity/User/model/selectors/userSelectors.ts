@@ -1,6 +1,7 @@
 import { RootState } from "@/lib/store/store";
 
-export const selectUserCart = (store: RootState) => store.User.cart
+export const selectUserCart = (store: RootState) => store.User.cart;
+export const selectUserData = (store: RootState) => store.User.user;
 
 export const selectCartTotalCurrency = (state: RootState) =>
   state.User.cart.reduce(

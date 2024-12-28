@@ -1,11 +1,54 @@
-import { getRouteOrderPage } from "@/shared/router/routes"
-import { Typography, Button } from "@mui/material"
+"use client";
+import { checkoutActions, CheckoutStep } from "@/entity/Checkout";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { getRouteCartPage, getRouteOrderPage } from "@/shared/router/routes";
+import { Typography, Button, Stack } from "@mui/material";
+import { redirect, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 const SuccessScreenStep = () => {
-        // lastCreatedOrderId = useAppSelector(selectLastCreatedOrder)
+  const dispatch = useAppDispatch();
+  const params = useSearchParams();
+  const orderId = params.get("orderId");
+
+  useEffect(() => {
+    dispatch(checkoutActions.setCurrentStep(CheckoutStep.successScreen));
+  }, [dispatch]);
+
+  if (!orderId) {
+    return redirect(getRouteCartPage());
+  }
+
   return (
-        <Typography>Заказ успешно создан! <Button href={getRouteOrderPage(1)}>Перейти на страницу заказ</Button></Typography>
-  )
-}
+    <Stack gap={4}>
+      <Stack gap={2} alignItems="center">
+        <Typography fontWeight="bold" variant="h4">
+          Заказ успешно оформлен!! 🎉
+        </Typography>
+        <Typography variant="h5">Осталось только получить! 🌞</Typography>
+      </Stack>
+
+      <Stack direction="row" gap={2} justifyContent="center">
+        <Button
+          href={getRouteOrderPage(orderId)}
+          color="success"
+          variant="outlined"
+          sx={{ width: "max-content" }}
+        >
+          На главную
+        </Button>
+
+        <Button
+          href={getRouteOrderPage(orderId)}
+          color="success"
+          variant="contained"
+          sx={{ width: "max-content" }}
+        >
+          Перейти к заказу
+        </Button>
+      </Stack>
+    </Stack>
+  );
+};
 
 export default SuccessScreenStep;

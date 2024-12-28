@@ -1,5 +1,9 @@
 "use client";
-import { checkoutActions, CheckoutStep, selectCheckoutPaymentType } from "@/entity/Checkout";
+import {
+  checkoutActions,
+  CheckoutStep,
+  selectCheckoutPaymentType,
+} from "@/entity/Checkout";
 import { PaymentType, PaymentTypeSelect } from "@/features/PaymentTypeSelect";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { getRouteCheckoutOrderReviewPage } from "@/shared/router/routes";
@@ -11,12 +15,12 @@ const PaymentTypeStep = () => {
   const paymentType = useAppSelector(selectCheckoutPaymentType);
 
   const onChange = (paymentType: PaymentType) => {
-    dispatch(checkoutActions.setPaymentType(paymentType))
-  }
+    dispatch(checkoutActions.setPaymentType(paymentType));
+  };
 
   useEffect(() => {
     dispatch(checkoutActions.setCurrentStep(CheckoutStep.paymentType));
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
@@ -31,7 +35,6 @@ const PaymentTypeStep = () => {
       </Button>
     </>
   );
-
 };
 
 export default PaymentTypeStep;

@@ -8,6 +8,8 @@ import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import "./globals.css";
 import { StoreProvider } from "./StoreProvider";
 import { MapsProvider } from "./MapsProvider";
+import { getSession } from "@/lib/server/session";
+import { fetchUserById } from "@/entity/User/server";
 
 export const metadata: Metadata = {
   title: "Simple shop on Next.js",
@@ -26,18 +28,21 @@ const roboto = Roboto({
   variable: "--font-roboto",
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const user = await getSession();
+  const userData = user ? await fetchUserById(user.id) : undefined;
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={roboto.variable}>
         <InitColorSchemeScript attribute="class" />
         <AppRouterCacheProvider>
           <ThemeProvider>
-            <StoreProvider>
+            <StoreProvider user={userData}>
               <MapsProvider>
                 <CssBaseline />
                 <AppHeader />

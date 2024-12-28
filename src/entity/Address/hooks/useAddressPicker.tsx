@@ -207,7 +207,7 @@ export const useAddressPicker = (options: UseAddressPickerOptions) => {
     }
 
     setDefaultAddressOnMap(defaultQuery);
-  }, [ymaps, defaultQuery]);
+  }, [ymaps, defaultQuery, _inited, geocode, setAddress, setMarkByCoords]);
 
   return {
     map,

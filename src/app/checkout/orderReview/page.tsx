@@ -9,9 +9,12 @@ import {
 import {
   selectCartTotalCurrency,
   selectCartTotalItemsQuantity,
+  selectUserCart,
+  userActions,
 } from "@/entity/User";
 import { PaymentType } from "@/features/PaymentTypeSelect";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { getRouteCheckoutSuccessPage } from "@/shared/router/routes";
 import { Button, Divider, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -29,6 +32,7 @@ const OrderOverviewStep = () => {
   const router = useRouter();
   const isAllStepsPassed = useAppSelector(selectCheckoutAllStepsPassed);
   const data = useAppSelector(selectCheckoutData);
+  const cart = useAppSelector(selectUserCart);
   const totalCurrency = useAppSelector(selectCartTotalCurrency);
   const totalItemsQuantity = useAppSelector(selectCartTotalItemsQuantity);
 
@@ -37,24 +41,25 @@ const OrderOverviewStep = () => {
       setIsLoading(true);
 
       if (!data.deliveryAddress.detailedAddress)
-        throw new Error("Address is not defined");
+        throw new Error("Не указан адрес доставки");
 
       const body: CreateOrderBody = {
         address: data.deliveryAddress.detailedAddress,
+        products: cart,
         paymentType: data.paymentType,
         totalPrice: totalCurrency,
       };
 
-      const res = await fetch("/api/orders", {
+      const response = await fetch("/api/orders", {
         method: "POST",
         body: JSON.stringify(body),
       }).then((d) => d.json());
 
-      if (res.message) throw new Error(res.message);
+      if (response.message) throw new Error(response.message);
 
-      if (res.order) {
-        // dispatch(checkoutActions.setLastCreatedOrder(order));
-        router.push("/checkout/successScreen");
+      if (response.orderId) {
+        dispatch(userActions.clearCart());
+        router.push(getRouteCheckoutSuccessPage(response.orderId));
       }
     } catch (e) {
       console.log(e);
@@ -65,7 +70,7 @@ const OrderOverviewStep = () => {
 
   useEffect(() => {
     dispatch(checkoutActions.setCurrentStep(CheckoutStep.orderReview));
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

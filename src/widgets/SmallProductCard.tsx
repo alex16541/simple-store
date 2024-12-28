@@ -15,6 +15,7 @@ import {
 
 import { CartProductCounter } from "@/features/CartProductCounter";
 import { Product } from "@/entity/Product";
+import { ImageNotFound } from "@/shared/ui/ImageNotFound";
 
 const CardImageContainer = styled(Link)(() => ({
   aspectRatio: "1/1",
@@ -31,7 +32,6 @@ const CardImage = styled(CardMedia)(() => ({
 
 const ProductTitle = styled(Typography)(({ theme }) => ({
   fontWeight: "bold",
-  marginBottom: theme.spacing(2),
   display: "flex",
   gap: theme.spacing(1),
   justifyContent: "space-between",
@@ -54,22 +54,24 @@ interface SmamllProductCardProps {
 
 export const SmallProductCard = (props: SmamllProductCardProps) => {
   const { product } = props;
+  const image = product.images?.[0];
 
   return (
     <ProductCard variant="outlined">
-      <CardImageContainer href={getRouteProductPage(product.id)}>
-        <CardImage
-          component="img"
-          image="/les.jpeg"
-          src="/les.jpeg"
-          alt="nature"
-        />
+      <CardImageContainer href={getRouteProductPage(product.id)} sx={{textDecoration: 'none'}}>
+        {image ? (
+          <CardImage component="img" src={image ?? "/les.jpeg"} alt="nature" />
+        ) : (
+        <Box display="flex" flexDirection="column" gap={1} alignItems="center" justifyContent="center" height="100%" sx={{borderBottom: 1, borderColor: 'divider'}}>
+          <ImageNotFound/>
+        </Box>
+        )}
       </CardImageContainer>
       <CardContent>
-        <ProductTitle variant="h5">
-          {product.name}
-          <Box component={"span"}>{Number(product.price).toFixed(0)}₽</Box>
-        </ProductTitle>
+        <ProductTitle variant="h5">{product.name}</ProductTitle>
+        <Typography mb={2} variant="h5" fontWeight="bold" color="success">
+          {Number(product.price).toFixed(0)}₽
+        </Typography>
         <Rating value={Number(product.rate)} readOnly />
         <Typography>{product.description}</Typography>
       </CardContent>

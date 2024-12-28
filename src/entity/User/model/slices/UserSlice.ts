@@ -1,8 +1,9 @@
 import { Product } from "@/entity/Product";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserSchema } from "../types/user";
+import { User, UserSchema } from "../types/user";
 
 const USER_CART_STORAGE_KEY = "USER_CART";
+const USER_STORAGE_KEY = "USER_DATA";
 
 const initialState: UserSchema = {
   cart: [],
@@ -12,6 +13,30 @@ const UserSlice = createSlice({
   name: "User",
   initialState,
   reducers: {
+    initUser: (state) => {
+      const user = JSON.parse(
+        localStorage.getItem(USER_STORAGE_KEY) ?? "{}"
+      );
+
+      if (user.id) state.user = user;
+    },
+
+    setUser: (state, {payload}: PayloadAction<User>) => {
+      state.user = payload;
+    },
+
+    login: (state, {payload}: PayloadAction<User>) => {
+      state.user = payload;
+      
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(payload));
+    },
+
+    logout: (state) => {
+      state.user = undefined; 
+
+      localStorage.removeItem(USER_STORAGE_KEY);
+    },
+
     initCart: (state) => {
       const cart = JSON.parse(
         localStorage.getItem(USER_CART_STORAGE_KEY) ?? "[]",
@@ -55,6 +80,12 @@ const UserSlice = createSlice({
 
       localStorage.setItem(USER_CART_STORAGE_KEY, JSON.stringify(state.cart));
     },
+
+    clearCart: (state) => {
+      state.cart = [];
+
+      localStorage.removeItem(USER_CART_STORAGE_KEY);
+    }
   },
 });
 
