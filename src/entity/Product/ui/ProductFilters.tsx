@@ -62,6 +62,7 @@ export const ProductFilters = (props: ProductFiltersProps) => {
               label="Категория"
               value={selectedCategory}
               fullWidth
+              color="success"
             />
           )}
         />
@@ -75,6 +76,7 @@ export const ProductFilters = (props: ProductFiltersProps) => {
               value={selectedPriceMin}
               type="number"
               onChange={onChangeMinPrice}
+              color="success"
             />
             <TextField
               onChange={onChangeMaxPrice}
@@ -83,6 +85,7 @@ export const ProductFilters = (props: ProductFiltersProps) => {
               label="До"
               placeholder={maxPricePlaceholder}
               type="number"
+              color="success"
             />
           </Stack>
         </Stack>
@@ -112,6 +115,7 @@ export const ProductFilters = (props: ProductFiltersProps) => {
               variant="outlined"
               label="Бренд"
               fullWidth
+              color="success"
             />
           )}
         />

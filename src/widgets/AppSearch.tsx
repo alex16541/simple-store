@@ -28,7 +28,7 @@ const Search = styled("div")(({ theme }) => ({
 }));
 
 const SearchIconWrapperSx: SxProps = {
-  padding: [0, 2],
+  padding: 2,
   height: "100%",
   position: "absolute",
   pointerEvents: "none",

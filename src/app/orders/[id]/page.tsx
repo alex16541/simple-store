@@ -98,8 +98,8 @@ const OrderPage = async (props: OrderPageProps) => {
   return (
     <Container maxWidth="xl">
       <PageTitle>Состав заказа №{order.id}</PageTitle>
-      <Grid2 container columnSpacing={2}>
-        <Grid2 size={[8]}>
+      <Grid2 container columnSpacing={2} rowSpacing={2} direction={["column-reverse", "column-reverse", "row"]}>
+        <Grid2 size={[12, 12, 8]}>
           <Stack gap={2}>
             {order.items.map((i) => (
               <CartItem
@@ -124,7 +124,7 @@ const OrderPage = async (props: OrderPageProps) => {
             ))}
           </Stack>
         </Grid2>
-        <Grid2 size={[4]}>
+        <Grid2 size={[12, 12, 4]}>
           <Card variant="outlined" sx={{ borderRadius: 6 }}>
             <CardContent>
               <Typography variant="h5" fontWeight="bold">

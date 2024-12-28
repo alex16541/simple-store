@@ -36,6 +36,8 @@ export const CartButton = () => {
             borderRadius: [0, 6],
             borderTopRightRadius: [0, 0],
             borderBottomRightRadius: [0, 0],
+            border: [0, 1],
+            borderColor: ['divider', 'divider'] 
           },
         }}
         anchor="right"
@@ -44,7 +46,7 @@ export const CartButton = () => {
       >
         <Box
           sx={{
-            width: ["100vw", 400, 500, 600],
+            width: ["100vw", 500, 500, 600],
             padding: 3,
             display: "grid",
             gridTemplate: "auto 1fr auto / 1fr",

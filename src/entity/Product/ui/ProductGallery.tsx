@@ -3,16 +3,68 @@ import { Box, IconButton, Stack, SxProps } from "@mui/material";
 import { useMemo, useState } from "react";
 import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRounded";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
+import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftRounded";
+import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 import { ImageNotFound } from "@/shared/ui/ImageNotFound";
 
 interface ProductGalleryProps {
   images?: string[];
   scrollLength?: number;
   sx?: SxProps;
+  imagesSx?: SxProps;
+  orientation?: "vertical" | "horizontal";
 }
 
+const horizontalRootSx: SxProps = {
+  height: "520px",
+  flexDirection: "row",
+  alignItems: "center",
+};
+
+const verticalRootSx: SxProps = {
+  width: "100%",
+  flexDirection: "column-reverse",
+  alignItems: "center",
+  boxSizing: "border-box",
+  overflow: "hidden"
+};
+
+const horizontalImageListSx: SxProps = {
+  width: "100px",
+  flexDirection: "column",
+  flexShrink: 0
+};
+
+const verticalImageListSx: SxProps = {
+  height: "100px",
+  flexDirection: "row",
+};
+
+const horizontalImageSx: SxProps = {
+  width: "100%",
+};
+
+const verticalImageSx: SxProps = {
+  width: "100px",
+};
+
+const horizontalControlsSx: SxProps = {
+  width: "100%",
+};
+
+const verticalControlsSx: SxProps = {
+  width: "50px",
+  height: "100%",
+};
+
 export const ProductGallery = (props: ProductGalleryProps) => {
-  const { images = [], scrollLength = 4, sx } = props;
+  const {
+    images = [],
+    scrollLength = 4,
+    sx,
+    imagesSx,
+    orientation = "horizontal",
+  } = props;
 
   const [selectedImage, setSelectedImage] = useState(0);
   const [offset, setOffset] = useState(0);
@@ -34,33 +86,45 @@ export const ProductGallery = (props: ProductGalleryProps) => {
   return (
     <Stack
       sx={{
-        flexDirection: "row",
         gap: 1,
-        height: "520px",
-        alignItems: "center",
         boxSizing: "content-box",
+        ...(orientation === "horizontal" ? horizontalRootSx : verticalRootSx),
         ...sx,
       }}
     >
       {!!images.length && (
-        <Stack gap={1} alignItems="center" sx={{ width: "100px" }}>
+        <Stack
+          gap={1}
+          alignItems="center"
+          sx={{
+            ...(orientation === "horizontal"
+              ? horizontalImageListSx
+              : verticalImageListSx),
+            ...imagesSx,
+          }}
+        >
           <IconButton
             color="success"
             sx={{
               borderRadius: 4,
-              width: "100%",
               opacity: isScrollUpDisabled ? 0 : 1,
+              ...(orientation === "horizontal"
+                ? horizontalControlsSx
+                : verticalControlsSx),
             }}
             onClick={decreaseOffset}
             disabled={isScrollUpDisabled}
           >
-            <KeyboardArrowUpRoundedIcon />
+            {orientation == "horizontal" ? (
+              <KeyboardArrowUpRoundedIcon />
+            ) : (
+              <KeyboardArrowLeftRoundedIcon />
+            )}
           </IconButton>
           {images.slice(offset, offset + scrollLength).map((image, i) => (
             <Box
               key={i}
               sx={{
-                width: "100%",
                 overflow: "hidden",
                 aspectRatio: "1/1",
                 border: 3,
@@ -68,14 +132,18 @@ export const ProductGallery = (props: ProductGalleryProps) => {
                 borderRadius: 4,
                 cursor: "pointer",
                 boxSizing: "border-box",
+                ...(orientation === "horizontal"
+                  ? horizontalImageSx
+                  : verticalImageSx),
               }}
             >
               <Box
                 component="img"
                 src={image}
-                alt="bananas"
+                alt="image"
                 onClick={() => setSelectedImage(i)}
                 sx={{
+                  display: "block",
                   height: "100%",
                   width: "100%",
                   objectFit: "cover",
@@ -87,19 +155,26 @@ export const ProductGallery = (props: ProductGalleryProps) => {
             color="success"
             sx={{
               borderRadius: 4,
-              width: "100%",
               opacity: isScrollDownDisabled ? 0 : 1,
+              ...(orientation === "horizontal"
+                ? horizontalControlsSx
+                : verticalControlsSx),
             }}
             onClick={increaseOffset}
             disabled={isScrollDownDisabled}
           >
-            <KeyboardArrowDownRoundedIcon />
+            {orientation == "horizontal" ? (
+              <KeyboardArrowDownRoundedIcon />
+            ) : (
+              <KeyboardArrowRightRoundedIcon />
+            )}
           </IconButton>
         </Stack>
       )}
 
       <Box
         height="100%"
+        width="100%"
         sx={{ aspectRatio: "1/1" }}
         borderRadius={6}
         overflow="hidden"
@@ -110,6 +185,7 @@ export const ProductGallery = (props: ProductGalleryProps) => {
             src={images[selectedImage]}
             alt="Product preview"
             height="100%"
+            width={orientation === "horizontal" ? "auto" : "100%"}
             sx={{ objectFit: "contain", borderRadius: 6, overflow: "hidden" }}
           />
         ) : (

@@ -55,7 +55,7 @@ export async function getProducts(
     const params = [];
     if (searchParams.search)
       params.push(
-        `name ILIKE '%${searchParams.search}%' OR description ILIKE '%${searchParams.search}%'`,
+        `(name ILIKE '%${searchParams.search}%' OR description ILIKE '%${searchParams.search}%')`,
       );
     if (searchParams.category)
       params.push(`category = '${searchParams.category}'`);

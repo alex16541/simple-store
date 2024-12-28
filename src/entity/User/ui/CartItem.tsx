@@ -1,6 +1,6 @@
 import { Product } from "@/entity/Product";
 import { ImageNotFound } from "@/shared/ui/ImageNotFound";
-import { Card, Box, CardMedia, Stack, Typography } from "@mui/material";
+import { Card, Box, Stack, Typography } from "@mui/material";
 import { ReactNode, useMemo } from "react";
 
 interface CartItemProps {
@@ -33,16 +33,18 @@ export const CartItem = (props: CartItemProps) => {
         width={100}
         height={100}
         display="flex"
-        alignItems='center'
-        justifyContent='center'
+        alignItems="center"
+        justifyContent="center"
         sx={{
           overflow: "hidden",
           borderRadius: 4,
           objectFit: "cover",
+          aspectRatio: "1/1",
+          flexShrink: 0,
         }}
       >
         {image ? (
-          <CardMedia
+          <Box
             component="img"
             src={image}
             alt={product.name}
@@ -50,7 +52,7 @@ export const CartItem = (props: CartItemProps) => {
             height="100%"
           />
         ) : (
-          <ImageNotFound text={''}/>
+          <ImageNotFound text={""} />
         )}
       </Box>
 

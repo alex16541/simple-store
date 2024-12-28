@@ -30,7 +30,7 @@ const SuccessScreenStep = () => {
 
       <Stack direction="row" gap={2} justifyContent="center">
         <Button
-          href={getRouteOrderPage(orderId)}
+          href="/"
           color="success"
           variant="outlined"
           sx={{ width: "max-content" }}

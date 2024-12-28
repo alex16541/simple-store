@@ -1,4 +1,11 @@
-import { Stepper, Step, StepLabel } from "@mui/material";
+import {
+  Stepper,
+  Step,
+  StepLabel,
+  useTheme,
+  useMediaQuery,
+  MobileStepper,
+} from "@mui/material";
 import { CheckoutStep } from "../model/consts/steps";
 import { useAppSelector } from "@/lib/store/hooks";
 import {
@@ -17,23 +24,48 @@ const steps: { value: CheckoutStep; label: string }[] = [
 export const CheckoutProgress = () => {
   const currentStep = useAppSelector(selectCheckoutCurrentStep);
   const checkoutData = useAppSelector(selectCheckoutData);
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
   return (
-    <Stepper alternativeLabel activeStep={currentStep}>
-      {steps.map(({ value, label }) => {
-        if (
-          value === CheckoutStep.payment &&
-          checkoutData.paymentType !== "card_online"
-        ) {
-          return null;
-        }
+    <>
+      {isDesktop ? (
+        <Stepper alternativeLabel activeStep={currentStep}>
+          {steps.map(({ value, label }) => {
+            if (
+              value === CheckoutStep.payment &&
+              checkoutData.paymentType !== "card_online"
+            ) {
+              return null;
+            }
 
-        return (
-          <Step key={value}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        );
-      })}
-    </Stepper>
+            return (
+              <Step key={value}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            );
+          })}
+        </Stepper>
+      ) : (
+        <MobileStepper
+          variant="progress"
+          position="static"
+          sx={{
+            maxWidth: "100%",
+            ".MuiLinearProgress-root": {
+              width: "100%",
+              backgroundColor: "success.dark",
+            },
+            ".MuiLinearProgress-bar": {
+              backgroundColor: "success.main",
+            },
+          }}
+          steps={steps.length}
+          activeStep={currentStep}
+          nextButton={null}
+          backButton={null}
+        ></MobileStepper>
+      )}
+    </>
   );
 };

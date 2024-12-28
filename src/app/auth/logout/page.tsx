@@ -27,12 +27,12 @@ const LogoutPage = async (props: LogoutPageProps) => {
         mb={1}
         mt={3}
       >
-        Вы уже авторизированы 🌞
+        Вы уже авторизированы&nbsp;🌞
       </Typography>
       <Typography variant="subtitle1" textAlign="center" mb={2}>
         Выйти и зайти под другим пользователем?
       </Typography>
-      <Stack gap={1} direction="row">
+      <Stack gap={1} direction={["column", "row"]}>
         <Button href={from ?? '/'} color="success" variant="outlined" fullWidth>
           Нет, вернуться назад
         </Button>

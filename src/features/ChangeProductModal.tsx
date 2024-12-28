@@ -41,7 +41,12 @@ export const ChangeProductModal = (props: ChangeProductModalProps) => {
 
   return (
     <>
-      <Button onClick={onOpen} color="success" sx={{ width: "100%" }}>
+      <Button
+        onClick={onOpen}
+        color="success"
+        variant="contained"
+        sx={{ width: "100%" }}
+      >
         Редактировать продукт
       </Button>
       <Dialog
@@ -53,9 +58,13 @@ export const ChangeProductModal = (props: ChangeProductModalProps) => {
           action: onSubmit,
           sx: {
             p: 4,
-            borderRadius: 6,
+            borderRadius: [0, 6],
             width: "100%",
-            maxWidth: "600px",
+            borderColor: ["#00000000", "divider"],
+            height: ["100%", "auto"],
+            maxWidth: ["100%", "600px"],
+            maxHeight: ["100%"],
+            margin: [0, "32px"],
           },
         }}
       >

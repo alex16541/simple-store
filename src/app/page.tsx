@@ -21,13 +21,11 @@ const links = [
   {
     href: getRouteCartPage(),
     text: "Карзина",
-    roles: ["customer"],
   },
   {
     href: getRouteOrdersPage(),
     text: "Ваши заказы",
     authOnly: true,
-    roles: ["customer"],
   },
   {
     href: getRouteManagerOrdersPage(),

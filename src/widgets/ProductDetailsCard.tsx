@@ -10,6 +10,8 @@ import {
   Chip,
   CardActions,
   styled,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import { CartProductCounter } from "@/features/CartProductCounter";
 import { Product, ProductGallery } from "@/entity/Product";
@@ -33,10 +35,18 @@ interface ProductDetailsCard {
 
 export const ProductDetailsCard = (props: ProductDetailsCard) => {
   const { product, userRole } = props;
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
   return (
     <ProductCard variant="outlined">
-      <ProductGallery sx={{p: 2}} images={product.images}/>
+      <ProductGallery
+        sx={{
+          p: 2,
+        }}
+        orientation={isDesktop ? "horizontal" : "vertical"}
+        images={product.images}
+      />
       <Divider
         orientation="vertical"
         sx={{ display: ["none", "none", "block"] }}
@@ -57,6 +67,7 @@ export const ProductDetailsCard = (props: ProductDetailsCard) => {
             variant="h4"
             display="flex"
             justifyContent="space-between"
+            flexWrap="wrap"
             gap={1}
           >
             {product.name}{" "}
@@ -73,11 +84,8 @@ export const ProductDetailsCard = (props: ProductDetailsCard) => {
         <Box>
           <Divider flexItem />
           <CardActions>
-            {userRole === "customer" ? (
               <CartProductCounter product={product} />
-            ) : (
-              <ChangeProductModal product={product} />
-            )}
+              {userRole === 'manager' && <ChangeProductModal product={product} />}
           </CardActions>
         </Box>
       </Stack>
