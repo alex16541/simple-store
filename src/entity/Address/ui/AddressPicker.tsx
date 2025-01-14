@@ -29,7 +29,7 @@ export const AddressPicker = (props: AddressPickerProps) => {
           <TextField
             {...params}
             onChange={onChangeSuggestInput}
-            label="Адресс получения"
+            label="Адрес получения"
             required
             error={!!error}
             helperText={error}

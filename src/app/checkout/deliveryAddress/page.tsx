@@ -21,7 +21,7 @@ const DeliveryAddressStep = () => {
   const { detailedAddress: address, addressErrors: errors = [] } =
     deliveryAddress;
 
-  const onChageAddress = (address: DetailedAddress) => {
+  const onChangeAddress = (address: DetailedAddress) => {
     dispatch(checkoutActions.setDeliveryAddress({ detailedAddress: address }));
   };
 
@@ -32,8 +32,6 @@ const DeliveryAddressStep = () => {
   const isAddressValid = useMemo(() => {
     const isAnyError = Object.values(errors).filter(Boolean).length;
     const isValid = address ? isDetailedAddressValid(address) : false;
-
-    console.log(isValid, address, isDetailedAddressValid(address), isAnyError);
 
     return !isAnyError && isValid;
   }, [errors, address]);
@@ -46,7 +44,7 @@ const DeliveryAddressStep = () => {
     <>
       <DetailedAddressForm
         defaultValue={address}
-        onChange={onChageAddress}
+        onChange={onChangeAddress}
         onChangeErrors={onChangeErrors}
       />
       <Button

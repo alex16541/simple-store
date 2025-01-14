@@ -14,7 +14,7 @@ const CheckoutLayout = ({
   return (
     <Container sx={{ paddingY: 2 }}>
       <Stack gap={3}>
-        <CheckoutProgress />
+      {isCheckoutInited && <CheckoutProgress />}
 
         <Card
           sx={{

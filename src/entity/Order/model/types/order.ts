@@ -1,6 +1,6 @@
 import { CartProduct } from "@/entity/User";
 
-export type OrderStatus = "pending" | "paid" | "delivired" | "cancelled";
+export type OrderStatus = "pending" | "paid" | "delivered" | "cancelled";
 export interface Order {
   id: string;
   createdAt: string;

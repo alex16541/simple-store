@@ -13,3 +13,4 @@ export const selectCheckoutAllStepsPassed = createSelector([(state: RootState) =
   const isAddressValid = isDetailedAddressValid(data.deliveryAddress?.detailedAddress);
 return isAddressValid &&  data.paymentType
 })
+export const selectIsChckoutOnlinePaymentSelected = (state: RootState) => state.Checkout.data.paymentType !== "card_online";

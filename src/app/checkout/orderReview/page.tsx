@@ -14,6 +14,7 @@ import {
 } from "@/entity/User";
 import { PaymentType } from "@/features/PaymentTypeSelect";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { formatPrice } from "@/shared/lib/PriceFormatters";
 import { getRouteCheckoutSuccessPage } from "@/shared/router/routes";
 import { Button, Divider, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
@@ -87,7 +88,7 @@ const OrderOverviewStep = () => {
       <Typography>Общее кол-во товаров: {totalItemsQuantity}</Typography>
       <Divider />
       <Typography color="success" fontWeight="bold">
-        Общая сумма заказа: {totalCurrency}₽
+        Общая сумма заказа: {formatPrice(totalCurrency)}₽
       </Typography>
       <Button
         size="large"

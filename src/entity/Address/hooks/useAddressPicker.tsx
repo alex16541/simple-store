@@ -170,7 +170,7 @@ export const useAddressPicker = (options: UseAddressPickerOptions) => {
   );
 
   useEffect(() => {
-    if (!mapRef.current || !ymaps) return;
+    if (!mapRef.current || !ymaps || map.current) return;
 
     const newMap = new ymaps.Map(mapRef.current, DEFAULT_MAP_LOCATION, {
       copyrightUaVisible: false,
@@ -179,6 +179,7 @@ export const useAddressPicker = (options: UseAddressPickerOptions) => {
     map.current = newMap;
 
     newMap.events.add("click", onMapClick);
+
   }, [ymaps, onMapClick]);
 
   useEffect(() => {

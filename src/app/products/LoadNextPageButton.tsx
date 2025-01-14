@@ -51,7 +51,7 @@ export const LoadNextPageButton = (props: LoadNextPageButtonProps) => {
         color="success"
         disabled={(searchParams.get("offset") ?? 0) === 0}
       >
-        Предидущая страница
+        Предыдущая страница
       </Button>
       <Button
         onClick={loadNext}

@@ -16,6 +16,7 @@ import {
 import { CartProductCounter } from "@/features/CartProductCounter";
 import { Product } from "@/entity/Product";
 import { ImageNotFound } from "@/shared/ui/ImageNotFound";
+import { formatPrice } from "@/shared/lib/PriceFormatters";
 
 const CardImageContainer = styled(Link)(() => ({
   aspectRatio: "1/1",
@@ -70,7 +71,7 @@ export const SmallProductCard = (props: SmamllProductCardProps) => {
       <CardContent>
         <ProductTitle variant="h5">{product.name}</ProductTitle>
         <Typography mb={2} variant="h5" fontWeight="bold" color="success">
-          {Number(product.price).toFixed(0)}₽
+          {formatPrice(product.price)}₽
         </Typography>
         <Rating value={Number(product.rate)} readOnly />
         <Typography>{product.description}</Typography>

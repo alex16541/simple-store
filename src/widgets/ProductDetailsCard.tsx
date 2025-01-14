@@ -17,6 +17,7 @@ import { CartProductCounter } from "@/features/CartProductCounter";
 import { Product, ProductGallery } from "@/entity/Product";
 import { UserRole } from "@/entity/User";
 import { ChangeProductModal } from "@/features/ChangeProductModal";
+import { formatPrice } from "@/shared/lib/PriceFormatters";
 
 const ProductCard = styled(Card)(({ theme }) =>
   theme.unstable_sx({
@@ -37,6 +38,7 @@ export const ProductDetailsCard = (props: ProductDetailsCard) => {
   const { product, userRole } = props;
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const isSmallMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <ProductCard variant="outlined">
@@ -45,6 +47,7 @@ export const ProductDetailsCard = (props: ProductDetailsCard) => {
           p: 2,
         }}
         orientation={isDesktop ? "horizontal" : "vertical"}
+        scrollLength={isSmallMobile ? 2 : 4}
         images={product.images}
       />
       <Divider
@@ -71,7 +74,7 @@ export const ProductDetailsCard = (props: ProductDetailsCard) => {
             gap={1}
           >
             {product.name}{" "}
-            <Box component={"span"}>{Number(product.price).toFixed(0)}₽</Box>
+            <Box component={"span"}>{formatPrice(product.price)}₽</Box>
           </Typography>
           <Rating value={Number(product.rate)} readOnly />
           <Stack direction="row" gap={1}>

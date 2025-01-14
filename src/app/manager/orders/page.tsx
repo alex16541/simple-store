@@ -1,5 +1,7 @@
 import { statusTextMap } from "@/entity/Order";
 import { fetchManagerOrders } from "@/entity/Order/server";
+import { formatDate } from "@/shared/lib/DateFormatters";
+import { formatPrice } from "@/shared/lib/PriceFormatters";
 import { getRouteOrderPage } from "@/shared/router/routes";
 import { GoBackButton } from "@/shared/ui/GoBackButton";
 import { PageTitle } from "@/widgets/PageTitle";
@@ -50,14 +52,14 @@ const ManagerOrdersPage = async () => {
                   <Typography fontWeight="bold" color="success" variant="h6">#{order.id}</Typography>
                   <Typography>
                     От:{" "}
-                    {new Date(Date.parse(order.createdAt)).toLocaleDateString()}{" "}
+                    {formatDate(order.createdAt)}{" "}
                   </Typography>
                   <Typography>
                     Обновлён:{" "}
-                    {new Date(Date.parse(order.updatedAt)).toLocaleDateString()}
+                    {formatDate(order.updatedAt)}
                   </Typography>
                 </Stack>
-                <Typography variant="h6">{order.totalPrice}₽</Typography>
+                <Typography variant="h6">{formatPrice(order.totalPrice)}₽</Typography>
               </Stack>
               <Typography variant="h5" fontWeight="bold">
                 {statusTextMap[order.status]}

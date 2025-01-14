@@ -14,17 +14,17 @@ interface ProductsPageProsp {
 const ProductsPage = async (props: ProductsPageProsp) => {
   const { searchParams: params } = props;
   const searchParams = await params;
-  const {data: products, totalItems} = await getProducts(searchParams);
+  const { data: products, totalItems } = await getProducts(searchParams);
 
   return (
     <Container sx={{ paddingBottom: 2 }} maxWidth="xl">
       <PageTitle>Список товаров</PageTitle>
       <Grid2 container columnSpacing={2}>
         <Grid2 size={[12, 12, 12, 9]}>
-          {totalItems ? (
+          {+totalItems ? (
             <Stack gap={2}>
               <ProductsList products={products} />
-              <LoadNextPageButton pageSize={9} totalItems={totalItems}/>
+              <LoadNextPageButton pageSize={9} totalItems={totalItems} />
             </Stack>
           ) : (
             <Stack>

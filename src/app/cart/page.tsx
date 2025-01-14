@@ -6,7 +6,7 @@ import { Button, Container, Grid2 } from "@mui/material";
 const CartPage = () => {
   return (
     <Container maxWidth="xl">
-      <PageTitle>Карзина</PageTitle>
+      <PageTitle>Корзина</PageTitle>
       <Grid2 container columnSpacing={2} rowSpacing={2} direction={["column-reverse", "column-reverse", "row"]}>
         <Grid2 size={[12, 12, 8]}>
           <CartProductList />

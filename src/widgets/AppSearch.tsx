@@ -3,7 +3,7 @@ import { styled, alpha, SxProps } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { Box } from "@mui/material";
-import { KeyboardEvent, useState } from "react";
+import { KeyboardEvent, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { getRouteProductsPage } from "@/shared/router/routes";
 import { toggleSearchParams } from "@/shared/lib/ToggleSearchParams";
@@ -50,7 +50,8 @@ export const AppSearch = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [searchValue] = useState(searchParams.get("search") ?? "");
+  const searchParam = searchParams.get("search");
+  const [searchValue, setSearchValue] = useState("");
 
   const handleEnterClick = (e: KeyboardEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
@@ -71,6 +72,10 @@ export const AppSearch = () => {
     }
   };
 
+  useEffect(() => {
+    setSearchValue(searchParam ?? "");
+  }, [searchParam]);
+
   return (
     <Search>
       <Box sx={SearchIconWrapperSx}>
@@ -79,7 +84,8 @@ export const AppSearch = () => {
       <StyledInputBase
         placeholder="Поиск товаров…"
         inputProps={{ "aria-label": "Поиск товаров" }}
-        defaultValue={searchValue}
+        value={searchValue}
+        onChange={(e) => setSearchValue(e.target.value)}
         onKeyDown={handleEnterClick}
       />
     </Search>

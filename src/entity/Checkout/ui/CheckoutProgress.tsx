@@ -9,8 +9,7 @@ import {
 import { CheckoutStep } from "../model/consts/steps";
 import { useAppSelector } from "@/lib/store/hooks";
 import {
-  selectCheckoutCurrentStep,
-  selectCheckoutData,
+  selectCheckoutCurrentStep, selectIsChckoutOnlinePaymentSelected
 } from "../model/selectors/checkoutSlectors";
 
 const steps: { value: CheckoutStep; label: string }[] = [
@@ -23,7 +22,9 @@ const steps: { value: CheckoutStep; label: string }[] = [
 
 export const CheckoutProgress = () => {
   const currentStep = useAppSelector(selectCheckoutCurrentStep);
-  const checkoutData = useAppSelector(selectCheckoutData);
+  const isOnlinePaymentSelected = useAppSelector(
+    selectIsChckoutOnlinePaymentSelected,
+  );
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
@@ -32,10 +33,7 @@ export const CheckoutProgress = () => {
       {isDesktop ? (
         <Stepper alternativeLabel activeStep={currentStep}>
           {steps.map(({ value, label }) => {
-            if (
-              value === CheckoutStep.payment &&
-              checkoutData.paymentType !== "card_online"
-            ) {
+            if (value === CheckoutStep.payment && isOnlinePaymentSelected) {
               return null;
             }
 

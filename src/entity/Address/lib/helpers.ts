@@ -20,7 +20,7 @@ export const fetchSuggests = async (
 };
 
 export const prepareAddress = (address: GeocodeAddress) => {
-  const [house, street, city] = address.formatted.split(",").reverse();
+  const [house, street, city] = address.formatted.split(", ").reverse();
   const { formatted } = address;
 
   return { house, street, city, formatted };

@@ -1,4 +1,5 @@
 import { Product } from "@/entity/Product";
+import { formatPrice } from "@/shared/lib/PriceFormatters";
 import { ImageNotFound } from "@/shared/ui/ImageNotFound";
 import { Card, Box, Stack, Typography } from "@mui/material";
 import { ReactNode, useMemo } from "react";
@@ -13,7 +14,7 @@ export const CartItem = (props: CartItemProps) => {
   const { product, actions, quantity } = props;
 
   const price = useMemo(() => {
-    return Number(product.price).toFixed(0);
+    return formatPrice(product.price);
   }, [product.price]);
   const image = product.images?.[0];
 
@@ -59,7 +60,7 @@ export const CartItem = (props: CartItemProps) => {
       <Stack justifyContent="space-between" flexGrow={1}>
         <Typography variant="h5">{product.name}</Typography>
         <Typography variant="subtitle1">
-          ₽{price} * {quantity} = ₽{Number(price) * quantity}
+          {price}₽ * {quantity} = {Number(price) * quantity}₽
         </Typography>
         {actions}
       </Stack>

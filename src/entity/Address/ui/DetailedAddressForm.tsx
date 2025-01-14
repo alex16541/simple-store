@@ -34,36 +34,36 @@ export const DetailedAddressForm = (props: DetailedAddressFormProps) => {
       <Stack direction="row" gap={1}>
         <TextField
           label="Квартира \ офис"
-          value={formData.details.apartment}
-          onChange={(e) => onChangeApartment(e.target.value)}
+          defaultValue={formData.details.apartment}
+          onBlur={(e) => onChangeApartment(e.target.value)}
           fullWidth
         />
         <TextField
           label="Этаж"
-          value={formData.details.floor}
-          onChange={(e) => onChangeFloor(e.target.value)}
+          defaultValue={formData.details.floor}
+          onBlur={(e) => onChangeFloor(e.target.value)}
           fullWidth
         />
       </Stack>
       <Stack direction="row" gap={1}>
         <TextField
           label="Подъезд"
-          value={formData.details.entrance}
-          onChange={(e) => onChangeEntrance(e.target.value)}
+          defaultValue={formData.details.entrance}
+          onBlur={(e) => onChangeEntrance(e.target.value)}
           fullWidth
         />
         <TextField
           label="Домофон"
-          value={formData.details.intercom}
-          onChange={(e) => onChangeIntercom(e.target.value)}
+          defaultValue={formData.details.intercom}
+          onBlur={(e) => onChangeIntercom(e.target.value)}
           fullWidth
         />
       </Stack>
       <TextField
         multiline
         label="Комментарий для доставщика"
-        value={formData.details.comment}
-        onChange={(e) => onChangeComment(e.target.value)}
+        defaultValue={formData.details.comment}
+        onBlur={(e) => onChangeComment(e.target.value)}
       />
     </Stack>
   );

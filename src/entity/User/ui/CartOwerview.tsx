@@ -39,10 +39,10 @@ export const CartOwerview = (props: CartOwerviewProps) => {
           mb={1}
           mt={3}
         >
-          Ваша карзина пуста
+          Ваша корзина пуста
         </Typography>
         <Typography variant="subtitle1" textAlign="center" mb={2}>
-          Хотите добавить что-нибуд в карзину? 🌞
+          Хотите добавить что-нибуд в корзину? 🌞
         </Typography>
         <Stack gap={1} direction="row" justifyContent="center">
           <GoBackButton />

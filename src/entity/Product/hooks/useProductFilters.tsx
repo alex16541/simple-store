@@ -1,3 +1,4 @@
+import { formatPrice } from "@/shared/lib/PriceFormatters";
 import { toggleSearchParams } from "@/shared/lib/ToggleSearchParams";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useState, ChangeEvent, useEffect, useRef, useMemo } from "react";
@@ -57,7 +58,6 @@ export const useProductFilters = () => {
   };
 
   const onChangeRate = (e: Event, value: number | number[]) => {
-    console.log(value);
     if (Array.isArray(value)) {
       setSelectedRateRange(value);
     } else {
@@ -76,13 +76,13 @@ export const useProductFilters = () => {
   const minPricePlaceholder = useMemo(() => {
     if (priceRange?.min === undefined) return "";
 
-    return Number(priceRange.min).toFixed(0).toString();
+    return formatPrice(priceRange.min).toString();
   }, [priceRange?.min]);
 
   const maxPricePlaceholder = useMemo(() => {
     if (priceRange?.max === undefined) return "";
 
-    return Number(priceRange.max).toFixed(0).toString();
+    return formatPrice(priceRange.max).toString();
   }, [priceRange?.max]);
 
   const clearFilters = () => {

@@ -53,7 +53,7 @@ export const CartButton = () => {
             height: "100%",
           }}
         >
-        <ModalHeader title="Карзина" onClose={() => setIsOpen(false)}/>
+        <ModalHeader title="Корзина" onClose={() => setIsOpen(false)}/>
           <Stack gap={1} mb={3} pr={2} overflow={"hidden scroll"}>
             {!cart.length && (
               <Stack
@@ -63,7 +63,7 @@ export const CartButton = () => {
                 height={"100%"}
               >
                 <ProductionQuantityLimitsRoundedIcon fontSize="large" />
-                <Typography>В карзине ничего нет</Typography>
+                <Typography>В корзине ничего нет</Typography>
               </Stack>
             )}
             {cart.map((item) => (

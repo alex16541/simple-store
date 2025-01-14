@@ -18,7 +18,7 @@ const breadcrumbNameMap = {
   "/orders": "Заказы",
   "/manager": "Панель менеджера",
   "/manager/orders": "Открытые заказы",
-  "/cart": "Карзина",
+  "/cart": "Корзина",
   "/checkout": "Оформление заказа",
   "/checkout/deliveryAddress": "Выбор адреса доставки",
   "/checkout/paymentType": "Выбор способа оплаты",

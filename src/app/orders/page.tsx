@@ -10,6 +10,8 @@ import { statusTextMap } from "@/entity/Order";
 import { fetchUserOrders } from "@/entity/Order/server";
 import { getSession } from "@/lib/server/session";
 import { redirect } from "next/navigation";
+import { formatPrice } from "@/shared/lib/PriceFormatters";
+import { formatDate } from "@/shared/lib/DateFormatters";
 
 const UserOrdersPage = async () => {
   const user = await getSession();
@@ -36,9 +38,9 @@ const UserOrdersPage = async () => {
               <Stack direction="row" gap={2} justifyContent="space-between">
                 <Typography>
                   Заказ от:{" "}
-                  {new Date(Date.parse(order.createdAt)).toLocaleDateString()}
+                  {formatDate(order.createdAt)}
                 </Typography>
-                <Typography variant="h6">{order.totalPrice}₽</Typography>
+                <Typography variant="h6">{formatPrice(order.totalPrice)}₽</Typography>
               </Stack>
               <Typography variant="h5" fontWeight="bold" color="success">
                 {statusTextMap[order.status]}

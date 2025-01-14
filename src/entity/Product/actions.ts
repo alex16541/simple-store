@@ -20,16 +20,22 @@ export async function createProductsTable() {
 const withTotalItems = (query: string, subQuery: string = "") => {
   return `SELECT 
     (SELECT COUNT(*) FROM products ${subQuery}) AS "totalItems",
-    json_agg(product_data) AS "data" 
-FROM (
-  ${query}
-) AS product_data;`;
+      COALESCE(
+        JSON_AGG(product_data),
+        '[]'::JSON
+      ) AS "data" 
+      FROM (
+      ${query}
+    ) AS product_data;`;
 };
 
 export async function getProducts(
   searchParams?: Record<string, string>,
 ): Promise<WithPaginationResponse<Product[]>> {
-  let data: WithPaginationResponse<Product[]> = { data: [], totalItems: 0 };
+  let data: WithPaginationResponse<Product[]> = {
+    data: [],
+    totalItems: 0,
+  };
 
   const fetchProducts = async (
     limit: number | string = 9,

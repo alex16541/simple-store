@@ -20,6 +20,7 @@ import { fetchOrder, fetchOrderItems } from "@/entity/Order/server";
 import { getSession } from "@/lib/server/session";
 import { GoBackButton } from "@/shared/ui/GoBackButton";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
+import { formatPrice } from "@/shared/lib/PriceFormatters";
 
 const getOrder = async (
   userId: string | number | null,
@@ -111,7 +112,7 @@ const OrderPage = async (props: OrderPageProps) => {
                     {isCustomer ? (
                       <>
                         <Button color="success" variant="contained">
-                          В карзину
+                          В корзину
                         </Button>
                         <Button color="success" variant="outlined">
                           Оценить
@@ -134,7 +135,7 @@ const OrderPage = async (props: OrderPageProps) => {
                 Сумма заказа:
               </Typography>
               <Typography variant="h4" fontWeight="bold" color="success">
-                {order.totalPrice}₽
+                {formatPrice(order.totalPrice)}₽
               </Typography>
             </CardContent>
           </Card>

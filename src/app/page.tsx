@@ -20,7 +20,7 @@ const links = [
   },
   {
     href: getRouteCartPage(),
-    text: "Карзина",
+    text: "Корзина",
   },
   {
     href: getRouteOrdersPage(),
@@ -45,7 +45,7 @@ const links = [
   },
   {
     href: getRouteLogoutPage(),
-    text: "Выйти из акаунта",
+    text: "Выйти из аккаунта",
     authOnly: true,
   },
   {
@@ -61,7 +61,7 @@ export default async function Home() {
 
   return (
     <Container>
-      <PageTitle>Home page</PageTitle>
+      <PageTitle>Главная страница</PageTitle>
       <Paper sx={{ padding: 2, borderRadius: 6 }} variant="outlined">
         <Stack gap={2}>
           {links.map((link) => {

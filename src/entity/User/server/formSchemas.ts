@@ -16,15 +16,15 @@ export type SignpuFormState = FormState<{
 export const LoginFormSchema = z.object({
   email: z
     .string()
-    .email({ message: "Не коректный формат электронной почты" })
+    .email({ message: "Некорректный формат электронной почты" })
     .trim(),
   password: z
     .string()
-    .min(8, { message: "Пароль должен быть не меньше 8 символов в длинну" })
+    .min(8, { message: "Пароль должен быть не меньше 8 символов в длину" })
     .regex(/[a-zA-Z]/, {
-      message: "Пароль делже содержать хотябы одну заглавную букву",
+      message: "Пароль должен содержать хотя бы одну заглавную букву",
     })
-    .regex(/[0-9]/, { message: "Пароль делже содержать хотябы одну цифру" })
+    .regex(/[0-9]/, { message: "Пароль должен содержать хотя бы одну цифру" })
     .trim(),
 });
 
@@ -32,23 +32,23 @@ export const SignupFormSchema = z
   .object({
     name: z
       .string()
-      .min(2, { message: "Имя должно быть не меньше 2 сиволов в длинну" })
+      .min(2, { message: "Имя должно быть не меньше 2 сиволов в длину" })
       .trim(),
     email: z
       .string()
-      .email({ message: "Не коректный формат электронной почты" })
+      .email({ message: "Некорректный формат электронной почты" })
       .trim(),
     password: z
       .string()
-      .min(8, { message: "Пароль должен быть не меньше 8 символов в длинну" })
+      .min(8, { message: "Пароль должен быть не меньше 8 символов  в длину" })
       .regex(/[a-zA-Z]/, {
-        message: "Пароль делже содержать хотябы одну заглавную букву",
+        message: "Пароль должен содержать хотя бы одну заглавную букву",
       })
-      .regex(/[0-9]/, { message: "Пароль делже содержать хотябы одну цифру" })
+      .regex(/[0-9]/, { message: "Пароль должен содержать хотя бы одну цифру" })
       .trim(),
     confirm: z.string().trim(),
   })
   .refine((data) => data.password === data.confirm, {
-    message: "Пароли не совмадают",
+    message: "Пароли не совпадают",
     path: ["confirm"],
   });

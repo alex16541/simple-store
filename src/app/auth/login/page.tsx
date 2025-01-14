@@ -16,7 +16,7 @@ const LoginPage = async (props: LoginPageProps) => {
 
   return (
     <Container maxWidth="sm">
-      <PageTitle>Войдите в свой акаунт:</PageTitle>
+      <PageTitle>Войдите в свой аккаунт:</PageTitle>
       <EmailLoginForm redirectPath={from} />
     </Container>
   );
